@@ -16,13 +16,16 @@ pipeline {
         }
 
         stage('Prepare Dependencies') {
-            steps {
-                sh 'composer install'
-                sh 'php artisan migrate'
-                sh 'php artisan db:seed'
-                sh 'php artisan key:generate'
-            }
-        }
+    steps {
+        echo 'Current Directory: ' + pwd()
+        echo 'Environment Variables: ' + sh(script: 'env', returnStdout: true).trim()
+        sh 'composer install'
+        sh 'php artisan migrate'
+        sh 'php artisan db:seed'
+        sh 'php artisan key:generate'
+    }
+}
+
 
         // Uncomment the following stage if you have PHPUnit tests to run
         // stage('Execute Unit Tests') {
