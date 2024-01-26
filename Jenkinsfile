@@ -11,7 +11,7 @@ pipeline {
 
         stage('Checkout SCM') {
             steps {
-                git url: 'https://github.com/lucm9/php-todo.git'
+                git branch: 'main', url: 'https://github.com/lucm9/php-todo.git'
             }
         }
 
