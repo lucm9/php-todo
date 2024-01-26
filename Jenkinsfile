@@ -17,23 +17,26 @@ pipeline {
         stage('Prepare Dependencies') {
             steps {
                 script {
-                    def phpPath = sh(script: 'which php', returnStdout: true).trim()
-                    def artisanPath = sh(script: 'which artisan', returnStdout: true).trim()
+                    // Navigate to the project directory
+                    dir("/home/ec2-user/php-todo") {
+                        def phpPath = sh(script: 'which php', returnStdout: true).trim()
+                        def artisanPath = sh(script: 'which artisan', returnStdout: true).trim()
 
-                    echo "PHP Path: ${phpPath}"
-                    echo "Artisan Path: ${artisanPath}"
+                        echo "PHP Path: ${phpPath}"
+                        echo "Artisan Path: ${artisanPath}"
 
-                    // Install Composer dependencies
-                    sh 'composer install --no-interaction --prefer-dist'
+                        // Install Composer dependencies
+                        sh 'composer install --no-interaction --prefer-dist'
 
-                    // Run database migrations
-                    sh "${phpPath} ${artisanPath} migrate --force"
+                        // Run database migrations
+                        sh "${phpPath} ${artisanPath} migrate --force"
 
-                    // Seed the database (if needed)
-                    // sh "${phpPath} ${artisanPath} db:seed --force"
+                        // Seed the database (if needed)
+                        // sh "${phpPath} ${artisanPath} db:seed --force"
 
-                    // Generate the application key
-                    sh "${phpPath} ${artisanPath} key:generate"
+                        // Generate the application key
+                        sh "${phpPath} ${artisanPath} key:generate"
+                    }
                 }
             }
         }
