@@ -25,12 +25,11 @@ pipeline {
                 sh 'php artisan key:generate'
             }
         }
-
-        // Uncomment the following stage if you have PHPUnit tests to run
-        // stage('Execute Unit Tests') {
-        //     steps {
-        //         sh './vendor/bin/phpunit'
-        //     }
-        // }
+        
+        stage('Execute Unit Tests') {
+            steps {
+                sh './vendor/bin/phpunit'
+            }
+        }
     }
 }
