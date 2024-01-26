@@ -18,6 +18,7 @@ pipeline {
 
         stage('Prepare Dependencies') {
             steps {
+                sh 'mv .env.example .env'
                 sh 'composer install'
                 sh 'php artisan migrate --force'
                 sh 'php artisan db:seed'
