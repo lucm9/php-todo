@@ -2,7 +2,6 @@ pipeline {
     agent any
 
     stages {
-
         stage("Initial cleanup") {
             steps {
                 deleteDir()
@@ -16,16 +15,28 @@ pipeline {
         }
 
         stage('Prepare Dependencies') {
-    steps {
-        echo 'Current Directory: ' + pwd()
-        echo 'Environment Variables: ' + sh(script: 'env', returnStdout: true).trim()
-        sh 'composer install'
-        sh 'php artisan migrate'
-        sh 'php artisan db:seed'
-        sh 'php artisan key:generate'
-    }
-}
+            steps {
+                script {
+                    def phpPath = sh(script: 'which php', returnStdout: true).trim()
+                    def artisanPath = sh(script: 'which artisan', returnStdout: true).trim()
 
+                    echo "PHP Path: ${phpPath}"
+                    echo "Artisan Path: ${artisanPath}"
+
+                    // Install Composer dependencies
+                    sh 'composer install --no-interaction --prefer-dist'
+
+                    // Run database migrations
+                    sh "${phpPath} ${artisanPath} migrate --force"
+
+                    // Seed the database (if needed)
+                    // sh "${phpPath} ${artisanPath} db:seed --force"
+
+                    // Generate the application key
+                    sh "${phpPath} ${artisanPath} key:generate"
+                }
+            }
+        }
 
         // Uncomment the following stage if you have PHPUnit tests to run
         // stage('Execute Unit Tests') {
