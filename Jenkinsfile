@@ -17,8 +17,8 @@ pipeline {
 
         stage('Prepare Dependencies') {
             steps {
-                sh 'composer install --no-interaction'
-                sh 'php artisan migrate --force'
+                sh 'composer install'
+                sh 'php artisan migrate'
                 sh 'php artisan db:seed'
                 sh 'php artisan key:generate'
             }
