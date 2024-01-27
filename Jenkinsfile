@@ -57,19 +57,16 @@ pipeline {
     }
 
       stage('SonarQube Quality Gate') {
-    environment {
-        scannerHome = tool 'SonarQubeScanner'
-        propertiesFile = '/var/lib/jenkins/tools/hudson.plugins.sonar.SonarRunnerInstallation/SonarQubeScanner/conf/sonar-scanner.properties'
-    }
-    steps {
-        script {
+        environment {
+            scannerHome = tool 'SonarQubeScanner'
+        }
+        steps {
             withSonarQubeEnv('sonarqube') {
-                sh "${scannerHome}/bin/sonar-scanner -Dsonar.config.file=${propertiesFile} -X"
+                sh "${scannerHome}/bin/sonar-scanner"
             }
+
         }
     }
-}
-
 
     stage ('Package Artifact') {
       steps {
