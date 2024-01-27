@@ -57,16 +57,19 @@ pipeline {
     }
 
       stage('SonarQube Quality Gate') {
-        environment {
-            scannerHome = tool 'SonarQubeScanner'
-        }
-        steps {
+    environment {
+        scannerHome = tool 'SonarQubeScanner'
+        propertiesFile = '/home/ec2-user/php-todo/sonar-scanner.properties'
+    }
+    steps {
+        script {
             withSonarQubeEnv('sonarqube') {
-                sh "${scannerHome}/bin/sonar-scanner"
+                sh "${scannerHome}/bin/sonar-scanner -Dsonar.config.file=${propertiesFile}"
             }
-
         }
     }
+}
+
 
     stage ('Package Artifact') {
       steps {
