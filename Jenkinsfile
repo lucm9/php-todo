@@ -62,7 +62,7 @@ pipeline {
      }
     }
 
-    stage ('Upload Artifact to Artifactory') {
+  stage ('Upload Artifact to Artifactory') {
           steps {
             script { 
                  def server = Artifactory.server 'artifactory-server'                 
@@ -70,7 +70,7 @@ pipeline {
                     "files": [
                       {
                        "pattern": "php-todo.zip",
-                       "target": "generic-local/php-todo",
+                       "target": "generic-local/artifactory/php-todo",
                        "props": "type=zip;status=ready"
 
                        }
